@@ -24,6 +24,8 @@ namespace FirebirdSql.EntityFrameworkCore.Firebird.Storage.Internal;
 
 public class FbTimeSpanTypeMapping : TimeSpanTypeMapping
 {
+	public static new FbTimeSpanTypeMapping Default { get; } = new FbTimeSpanTypeMapping("TIME", FbDbType.Time);
+
 	readonly FbDbType _fbDbType;
 
 	public FbTimeSpanTypeMapping(string storeType, FbDbType fbDbType)

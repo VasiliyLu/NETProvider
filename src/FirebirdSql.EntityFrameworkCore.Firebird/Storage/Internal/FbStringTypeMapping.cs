@@ -15,6 +15,7 @@
 
 //$Authors = Jiri Cincura (jiri@cincura.net)
 
+using System;
 using System.Data;
 using System.Data.Common;
 using FirebirdSql.Data.FirebirdClient;
@@ -24,6 +25,8 @@ namespace FirebirdSql.EntityFrameworkCore.Firebird.Storage.Internal;
 
 public class FbStringTypeMapping : StringTypeMapping
 {
+	public static new FbStringTypeMapping Default { get; } = new FbStringTypeMapping("VARCHAR", System.Data.DbType.String, FbDbType.VarChar);
+
 	readonly FbDbType _fbDbType;
 
 	public FbStringTypeMapping(string storeType, DbType dbType, FbDbType fbDbType, int? size = null, bool unicode = true)
@@ -51,6 +54,18 @@ public class FbStringTypeMapping : StringTypeMapping
 			: $"'{EscapeSqlLiteral(svalue)}'";
 	}
 
+	// A compiled model clones every string mapping from Default, so FbDbType has to follow the store type.
 	protected override RelationalTypeMapping Clone(RelationalTypeMappingParameters parameters)
-		=> new FbStringTypeMapping(parameters, _fbDbType);
+		=> new FbStringTypeMapping(parameters, GetFbDbType(parameters.StoreType, _fbDbType));
+
+	static FbDbType GetFbDbType(string storeType, FbDbType fallback)
+	{
+		if (storeType.StartsWith("BLOB", StringComparison.OrdinalIgnoreCase))
+			return FbDbType.Text;
+		if (storeType.StartsWith("VARCHAR", StringComparison.OrdinalIgnoreCase) || storeType.Contains("VARYING", StringComparison.OrdinalIgnoreCase))
+			return FbDbType.VarChar;
+		if (storeType.StartsWith("CHAR", StringComparison.OrdinalIgnoreCase))
+			return FbDbType.Char;
+		return fallback;
+	}
 }

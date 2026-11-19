@@ -32,30 +32,30 @@ public class FbTypeMappingSource : RelationalTypeMappingSource
 	public const int DefaultDecimalPrecision = 18;
 	public const int DefaultDecimalScale = 2;
 
-	readonly FbBoolTypeMapping _boolean = new FbBoolTypeMapping();
+	readonly FbBoolTypeMapping _boolean = FbBoolTypeMapping.Default;
 
 	readonly ShortTypeMapping _smallint = new ShortTypeMapping("SMALLINT", DbType.Int16);
 	readonly IntTypeMapping _integer = new IntTypeMapping("INTEGER", DbType.Int32);
 	readonly LongTypeMapping _bigint = new LongTypeMapping("BIGINT", DbType.Int64);
 
 	readonly FbStringTypeMapping _char = new FbStringTypeMapping("CHAR", DbType.StringFixedLength, FbDbType.Char);
-	readonly FbStringTypeMapping _varchar = new FbStringTypeMapping("VARCHAR", DbType.String, FbDbType.VarChar);
+	readonly FbStringTypeMapping _varchar = FbStringTypeMapping.Default;
 	readonly FbStringTypeMapping _clob = new FbStringTypeMapping("BLOB SUB_TYPE TEXT", DbType.String, FbDbType.Text);
 
-	readonly FbByteArrayTypeMapping _binary = new FbByteArrayTypeMapping();
+	readonly FbByteArrayTypeMapping _binary = FbByteArrayTypeMapping.Default;
 
 	readonly FloatTypeMapping _float = new FloatTypeMapping("FLOAT");
 	readonly DoubleTypeMapping _double = new DoubleTypeMapping("DOUBLE PRECISION");
 	readonly DecimalTypeMapping _decimal = new DecimalTypeMapping($"DECIMAL({DefaultDecimalPrecision},{DefaultDecimalScale})");
 
-	readonly FbDateTimeTypeMapping _timestamp = new FbDateTimeTypeMapping("TIMESTAMP", FbDbType.TimeStamp);
+	readonly FbDateTimeTypeMapping _timestamp = FbDateTimeTypeMapping.Default;
 	readonly FbDateTimeTypeMapping _date = new FbDateTimeTypeMapping("DATE", FbDbType.Date);
-	readonly FbDateOnlyTypeMapping _dateOnly = new FbDateOnlyTypeMapping("DATE");
+	readonly FbDateOnlyTypeMapping _dateOnly = FbDateOnlyTypeMapping.Default;
 
-	readonly FbTimeSpanTypeMapping _timeSpan = new FbTimeSpanTypeMapping("TIME", FbDbType.Time);
-	readonly FbTimeOnlyTypeMapping _timeOnly = new FbTimeOnlyTypeMapping("TIME");
+	readonly FbTimeSpanTypeMapping _timeSpan = FbTimeSpanTypeMapping.Default;
+	readonly FbTimeOnlyTypeMapping _timeOnly = FbTimeOnlyTypeMapping.Default;
 
-	readonly FbGuidTypeMapping _guid = new FbGuidTypeMapping();
+	readonly FbGuidTypeMapping _guid = FbGuidTypeMapping.Default;
 
 	readonly Dictionary<string, RelationalTypeMapping> _storeTypeMappings;
 	readonly Dictionary<Type, RelationalTypeMapping> _clrTypeMappings;
