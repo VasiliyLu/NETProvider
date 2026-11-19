@@ -24,6 +24,8 @@ namespace FirebirdSql.EntityFrameworkCore.Firebird.Storage.Internal;
 
 public class FbDateTimeTypeMapping : DateTimeTypeMapping
 {
+	public static new FbDateTimeTypeMapping Default { get; } = new FbDateTimeTypeMapping("TIMESTAMP", FbDbType.TimeStamp);
+
 	readonly FbDbType _fbDbType;
 
 	public FbDateTimeTypeMapping(string storeType, FbDbType fbDbType)
@@ -58,6 +60,16 @@ public class FbDateTimeTypeMapping : DateTimeTypeMapping
 		}
 	}
 
+	// A compiled model clones DATE mappings from Default (TIMESTAMP), so FbDbType has to follow the store type.
 	protected override RelationalTypeMapping Clone(RelationalTypeMappingParameters parameters)
-		=> new FbDateTimeTypeMapping(parameters, _fbDbType);
+		=> new FbDateTimeTypeMapping(parameters, GetFbDbType(parameters.StoreType, _fbDbType));
+
+	static FbDbType GetFbDbType(string storeType, FbDbType fallback)
+	{
+		if (storeType.StartsWith("TIMESTAMP", StringComparison.OrdinalIgnoreCase))
+			return FbDbType.TimeStamp;
+		if (storeType.StartsWith("DATE", StringComparison.OrdinalIgnoreCase))
+			return FbDbType.Date;
+		return fallback;
+	}
 }

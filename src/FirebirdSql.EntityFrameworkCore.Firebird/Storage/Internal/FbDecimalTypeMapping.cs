@@ -22,6 +22,8 @@ namespace FirebirdSql.EntityFrameworkCore.Firebird.Storage.Internal;
 
 public class FbDecimalTypeMapping : DecimalTypeMapping
 {
+	public static new FbDecimalTypeMapping Default { get; } = new FbDecimalTypeMapping("DECIMAL", FbTypeMappingSource.DefaultDecimalPrecision, FbTypeMappingSource.DefaultDecimalScale);
+
 	// The store type is built from precision and scale, so it reflects the configured facets.
 	public FbDecimalTypeMapping(string storeType, int precision, int scale)
 		: base(new RelationalTypeMappingParameters(
